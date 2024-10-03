@@ -1,5 +1,7 @@
 package farias.paulino.kauan.SistemaAgendamento.model;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -14,6 +16,7 @@ import lombok.Setter;
 @Entity
 public class Funcionario extends Usuario {
 	
+	@CPF
 	@Column(unique = true, nullable = false, length = 11 )
 	private String cpf;
 	

@@ -1,5 +1,6 @@
 package farias.paulino.kauan.SistemaAgendamento.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import farias.paulino.kauan.SistemaAgendamento.model.Funcionario;
 import farias.paulino.kauan.SistemaAgendamento.repository.IFuncionarioRepository;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class FuncionarioController {
@@ -22,17 +24,32 @@ public class FuncionarioController {
 
 	@RequestMapping(name = "funcionario", value = "/funcionario", method = RequestMethod.GET)
 	public ModelAndView FuncionarioGet(ModelMap model) {
-		return new ModelAndView("funcionario");
+		String mensagemErro = "";
+		try {
+			List<Funcionario> funcionarios = listar();
+			model.addAttribute("funcionarios", funcionarios);
+		} catch (Exception e) {
+			mensagemErro = e.getMessage();
+		}
+		model.addAttribute("mensagemErro", mensagemErro);
+		return new ModelAndView("cadastroFuncionarioProprietaria");
 	}
 
 	@RequestMapping(name = "funcionario", value = "/funcionario", method = RequestMethod.POST)
-	public ModelAndView FuncionarioPost(@RequestParam Map<String, String> param, ModelMap model) {
+	public ModelAndView FuncionarioPost(@RequestParam Map<String, String> param, ModelMap model,
+			HttpServletRequest request) {
+		try {
+			request.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
 		// Entrada
-		String cmd = param.get("cmd");
+		String cmd = param.get("botao");
+		String pagina = param.get("pagina");
 		String id = param.get("id");
 		String email = param.get("email");
 		String senha = param.get("senha");
-		String nivelAcesso = param.get("nivelAcesso");
+		String nivelAcesso = param.get("acesso");
 		String nome = param.get("nome");
 		String cpf = param.get("cpf");
 		String telefone = param.get("telefone");
@@ -40,49 +57,72 @@ public class FuncionarioController {
 		String redeSocial = param.get("redeSocial");
 
 		// Retorno
-		String saida = "";
-		String erro = "";
+		String mensagemSucesso = "";
+		String mensagemErro = "";
 		Funcionario funcionario = new Funcionario();
 
 		try {
 			if (cmd.equals("Cadastrar")) {
-				funcionario = new Funcionario(0, email, senha, "0", cpf, nome, telefone, perfil, redeSocial);
+				perfil = "";
+				redeSocial = "";
+
+				funcionario = new Funcionario(0, email, senha, "1", cpf, nome, telefone, perfil, redeSocial);
 				fRep.save(funcionario);
-				saida = "Funcionario cadastrado com sucesso!";
+				funcionario = new Funcionario();
+
+				mensagemSucesso = "Funcionario cadastrado com sucesso!";
 			}
+
+			if (cmd.equals("Editar")) {
+				funcionario = buscar(Integer.parseInt(id));
+			}
+
 			if (cmd.equals("Atualizar")) {
-				Funcionario funcinarioAntigo = buscar(Integer.parseInt(id));
-				funcionario.setId(Integer.parseInt(id));
-				funcionario.setSenha(senha);
-				funcionario.setNome(nome);
-				funcionario.setTelefone(telefone);
-				funcionario.setPerfil(perfil);
-				funcionario.setRedeSocial(redeSocial);
-				funcionario.setId(Integer.parseInt(id));
-				funcionario.setCpf(funcinarioAntigo.getCpf());
-				funcionario.setEmail(funcinarioAntigo.getEmail());
-				funcionario.setNivelAcesso("1");
-				fRep.save(funcionario);
-				saida = "Funcionario atualizado com sucesso com sucesso!";
-				// Tratar as validações de cpf 
+				if (!id.equals("0") && !id.isEmpty()) {
+					Funcionario funcionarioAntigo = buscar(Integer.parseInt(id));
+					funcionario.setCpf(funcionarioAntigo.getCpf());
+					funcionario.setEmail(funcionarioAntigo.getEmail());
+
+					funcionario.setId(Integer.parseInt(id));
+					funcionario.setSenha(senha);
+					funcionario.setNome(nome);
+					funcionario.setTelefone(telefone);
+
+					if (pagina.equals("proprietaria")) {
+						funcionario.setNivelAcesso(nivelAcesso);
+						funcionario.setRedeSocial(funcionarioAntigo.getRedeSocial());
+						funcionario.setPerfil(funcionarioAntigo.getPerfil());
+					}
+					if (pagina.equals("funcionario")) {
+						funcionario.setRedeSocial(redeSocial);
+						funcionario.setPerfil(perfil);
+					}
+
+					fRep.save(funcionario);
+					funcionario = new Funcionario();
+					mensagemSucesso = "Funcionario atualizado com sucesso com sucesso!";
+				} else {
+					mensagemErro = "É possível atualizar apenas funcionarios previamente cadastrados, após selecionar a opção de editar!";
+				}
 			}
 		} catch (Exception e) {
-			erro = trataErros(e.getMessage());
-			model.addAttribute("erro", erro);
+			mensagemErro = trataErros(e.getMessage());
 		}
-		model.addAttribute("mensagem", saida);
-		model.addAttribute("erro", erro);
+		List<Funcionario> funcionarios = listar();
+		model.addAttribute("funcionarios", funcionarios);
+		model.addAttribute("mensagemSucesso", mensagemSucesso);
+		model.addAttribute("mensagemErro", mensagemErro);
 		model.addAttribute("funcionario", funcionario);
-		return new ModelAndView("index");
+		return new ModelAndView("cadastroFuncionarioProprietaria");
 	}
-	
+
 	private Funcionario buscar(int id) {
 		return fRep.findById(id).orElse(new Funcionario());
 	}
-	private List<Funcionario> listar(){
+
+	private List<Funcionario> listar() {
 		return fRep.findAll();
 	}
-
 
 	private String trataErros(String message) {
 		System.out.println(message);
