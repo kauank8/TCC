@@ -26,7 +26,7 @@ public class Servico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 50, unique = true)
     private String titulo;
     
     @Column(nullable = false)
@@ -34,6 +34,9 @@ public class Servico {
     
     @Column(nullable = false)
     private double preco;
+    
+    @Column(nullable = false)
+    private String status;
 
     @ManyToMany
     @JoinTable(
@@ -42,5 +45,5 @@ public class Servico {
         inverseJoinColumns = @JoinColumn(name = "produto_id")
     )
     private List<Produto> produtos;
-
+    
 }

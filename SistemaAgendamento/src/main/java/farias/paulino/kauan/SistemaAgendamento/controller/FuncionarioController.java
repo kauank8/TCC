@@ -96,6 +96,7 @@ public class FuncionarioController {
 					if (pagina.equals("funcionario")) {
 						funcionario.setRedeSocial(redeSocial);
 						funcionario.setPerfil(perfil);
+						funcionario.setNivelAcesso(funcionarioAntigo.getNivelAcesso());
 					}
 
 					fRep.save(funcionario);
