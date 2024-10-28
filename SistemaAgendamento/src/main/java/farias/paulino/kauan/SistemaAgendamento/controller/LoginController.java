@@ -16,6 +16,7 @@ import farias.paulino.kauan.SistemaAgendamento.model.Funcionario;
 import farias.paulino.kauan.SistemaAgendamento.repository.IClienteRepository;
 import farias.paulino.kauan.SistemaAgendamento.repository.IFuncionarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -56,17 +57,25 @@ public class LoginController {
 				// Verifico se é um cliente
 				cliente = cRep.login_cliente(email, senha);
 				if (cliente != null) {
-					mensagemSucesso = "Montou cliente";
+					HttpSession session = request.getSession();
+					session.setAttribute("sessaoCliente", cliente);
+					session.removeAttribute("sessaoFuncionario");
+					
+					mensagemSucesso = "Bem vindo " + cliente.getNome();
 					model.addAttribute("mensagemSucesso", mensagemSucesso);
-					return new ModelAndView("loginCadastroCliente");
+					return new ModelAndView("index");
 				}
 
 				// Verifico se é um funcionario
 				funcionario = fRep.login_funcionario(email, senha);
 				if (funcionario != null) {
-					mensagemSucesso = "Montou funcionario";
+					HttpSession session = request.getSession();
+					session.setAttribute("sessaoFuncionario", funcionario);
+					session.removeAttribute("sessaoCliente");
+					
+					mensagemSucesso = "Bem vindo " + funcionario.getNome();
 					model.addAttribute("mensagemSucesso", mensagemSucesso);
-					return new ModelAndView("loginCadastroCliente");
+					return new ModelAndView("cadastroFuncionarioProprietaria");
 				}
 
 				mensagemErro = "Email ou senha invalido";

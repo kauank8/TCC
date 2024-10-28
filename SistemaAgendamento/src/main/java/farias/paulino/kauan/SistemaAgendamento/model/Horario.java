@@ -1,6 +1,6 @@
 package farias.paulino.kauan.SistemaAgendamento.model;
 
-import java.sql.Time;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +24,6 @@ public class Horario {
     private int id;
     
     @Column(nullable = false)
-    private Time hora;
+    private LocalTime hora;
 
 }

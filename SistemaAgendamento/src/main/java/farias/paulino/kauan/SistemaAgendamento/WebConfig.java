@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("cadastrarServicoProprietaria");
+		registry.addViewController("/").setViewName("loginCadastroCliente");
 	}
 
 	@Bean

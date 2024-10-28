@@ -18,7 +18,7 @@ class FuncionarioTests {
 	@Test
 	public void testarSalvarFuncionario() {
 		// Criando um funcionario com o construtor que herda de Usuario
-		Funcionario funcionario = new Funcionario(0, "joao@example.com", "senha123", "F", "54411002060", "João Silva",
+		Funcionario funcionario = new Funcionario(0, "joao@example.com", "senha123", "1", "82444698037", "João Silva",
 				"11988888888", "Gerente", "linkedin.com/in/joaosilva");
 
 		// Salvando o funcionario no banco de dados

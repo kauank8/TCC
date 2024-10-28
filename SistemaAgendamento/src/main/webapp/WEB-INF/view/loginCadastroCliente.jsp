@@ -52,8 +52,8 @@
                      <input type="submit" class="btn btn-second" name="botao" id="botaoLogin" value="Entrar">
                     <!--<button class="btn btn-second">Entrar</button>  -->      
                 </form>
-            </div><!-- second column -->
-        </div><!-- first content -->
+            </div>
+        </div>
         
         <div class="content second-content">
             <div class="first-column">

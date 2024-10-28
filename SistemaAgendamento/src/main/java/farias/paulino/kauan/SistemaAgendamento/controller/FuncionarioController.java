@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import farias.paulino.kauan.SistemaAgendamento.model.Funcionario;
 import farias.paulino.kauan.SistemaAgendamento.repository.IFuncionarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class FuncionarioController {
@@ -23,8 +24,18 @@ public class FuncionarioController {
 	private IFuncionarioRepository fRep;
 
 	@RequestMapping(name = "funcionario", value = "/funcionario", method = RequestMethod.GET)
-	public ModelAndView FuncionarioGet(ModelMap model) {
+	public ModelAndView FuncionarioGet(ModelMap model, HttpSession session) {
 		String mensagemErro = "";
+		
+		//Verificar estado da sessao
+		Funcionario funcionario = (Funcionario)session.getAttribute("funcionario");
+		if(funcionario == null) {
+			mensagemErro = "Você não tem acesso a essa pagina";
+			session.setAttribute("sessaoFuncionario", funcionario);
+			model.addAttribute("mensagemErro", mensagemErro);
+			return new ModelAndView("loginCadastroCliente");
+		}
+		
 		try {
 			List<Funcionario> funcionarios = listar();
 			model.addAttribute("funcionarios", funcionarios);

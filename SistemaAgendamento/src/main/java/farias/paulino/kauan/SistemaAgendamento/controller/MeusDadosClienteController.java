@@ -1,7 +1,6 @@
 package farias.paulino.kauan.SistemaAgendamento.controller;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +14,38 @@ import org.springframework.web.servlet.ModelAndView;
 import farias.paulino.kauan.SistemaAgendamento.model.Cliente;
 import farias.paulino.kauan.SistemaAgendamento.repository.IClienteRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
-public class ClienteController {
-
+public class MeusDadosClienteController {
 	@Autowired
 	private IClienteRepository cRep;
 
-	@RequestMapping(name = "cliente", value = "/cliente", method = RequestMethod.GET)
-	public ModelAndView ClienteGet(ModelMap model) {
-		return new ModelAndView("cliente");
+	@RequestMapping(name = "clienteDados", value = "/meusDadosCliente", method = RequestMethod.GET)
+	public ModelAndView meusDadosClienteGet(ModelMap model, HttpSession session) {
+		String mensagemErro = "";
+		
+		//Verificar estado da sessao
+		Cliente cliente = (Cliente)session.getAttribute("sessaoCliente");
+		if(cliente == null) {
+			mensagemErro = "Você não tem acesso a essa pagina";
+			session.setAttribute("sessaoCliente", cliente);
+			model.addAttribute("mensagemErro", mensagemErro);
+			return new ModelAndView("loginCadastroCliente");
+		}
+		
+		try {
+			model.addAttribute("cliente", cliente);
+		} catch (Exception e) {
+			mensagemErro = e.getMessage();
+		}
+		model.addAttribute("mensagemErro", mensagemErro);
+		return new ModelAndView("meusDadosCliente");
+		
 	}
 
-	@RequestMapping(name = "cliente", value = "/cliente", method = RequestMethod.POST)
-	public ModelAndView ClientePost(@RequestParam Map<String, String> param, ModelMap model, HttpServletRequest request) {
+	@RequestMapping(name = "clienteDados", value = "/meusDadosCliente", method = RequestMethod.POST)
+	public ModelAndView meusDadosClientePost(@RequestParam Map<String, String> param, ModelMap model, HttpServletRequest request, HttpSession session) {
 		try {
 			request.setCharacterEncoding("UTF-8");
 		} catch (UnsupportedEncodingException e1) {
@@ -36,12 +53,9 @@ public class ClienteController {
 		}
 		// Entrada
 		String cmd = param.get("botao");
-		String id = param.get("id");
 		String email = param.get("email");
 		String senha = param.get("senha");
-		String nivelAcesso = param.get("nivelAcesso");
 		String nome = param.get("nome");
-		String cpf = param.get("cpf");
 		String telefone = param.get("telefone");
 		String logradouro = param.get("logradouro");
 		String numero = param.get("numero");
@@ -50,47 +64,37 @@ public class ClienteController {
 		// Retorno
 		String mensagemSucesso = "";
 		String mensagemErro = "";
-		Cliente cliente = new Cliente();
-
+		Cliente cliente =  new Cliente();
+		
 		try {
-			if (cmd.equals("Cadastre-se")) {
-				cliente = new Cliente(0, email, senha, "0", cpf, nome, telefone, endereco);
-				cRep.save(cliente);
-				mensagemSucesso = "Cliente cadastrado com sucesso!";
-			}
 			if (cmd.equals("Atualizar")) {
-				Cliente clienteAntigo = buscar(Integer.parseInt(id));
+				Cliente clienteAntigo = (Cliente)session.getAttribute("sessaoCliente");
 				
-				cliente.setEmail(clienteAntigo.getEmail());
 				cliente.setCpf(clienteAntigo.getCpf());
-				cliente.setNivelAcesso("0");
-				cliente.setId(Integer.parseInt(id));
+				cliente.setNivelAcesso(clienteAntigo.getNivelAcesso());
+				cliente.setId(clienteAntigo.getId());
 				
 				cliente.setNome(nome);
 				cliente.setEndereco(endereco);
 				cliente.setSenha(senha);
 				cliente.setTelefone(telefone);
-
+				cliente.setEmail(email);
+				
 				cRep.save(cliente);
-				mensagemSucesso = "Cliente atualizado com sucesso com sucesso!";
+				session.setAttribute("sessaoCliente", cliente);
+				mensagemSucesso = "Dados atualizado com sucesso!";
 			}
 		} catch (Exception e) {
 			mensagemErro = trataErros(e.getMessage());
+			cliente = cRep.findById(cliente.getId()).orElseThrow();
+			session.setAttribute("sessaoCliente",cliente );
 		}
 		model.addAttribute("mensagemSucesso", mensagemSucesso);
 		model.addAttribute("mensagemErro", mensagemErro);
 		model.addAttribute("cliente", cliente);
-		return new ModelAndView("loginCadastroCliente");
+		return new ModelAndView("meusDadosCliente");
 	}
-
-	private Cliente buscar(int id) {
-		return cRep.findById(id).orElse(new Cliente());
-	}
-
-	private List<Cliente> listar() {
-		return cRep.findAll();
-	}
-
+	
 	private String trataErros(String message) {
 		System.out.println(message);
 		if (message.contains("cpf")) {
