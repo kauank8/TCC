@@ -164,8 +164,16 @@
             
               <c:choose>
             	<c:when test="${empty horarios}">
-               		Selecione um funcionario e uma data para conferir os horarios disponiveis
+               		<c:choose>
+			            <c:when test="${not empty funcionario}">
+			                Não há mais horários disponíveis para o funcionário selecionado nesta data.
+			            </c:when>
+			            <c:otherwise>
+			                Selecione um funcionário e uma data para conferir os horários disponíveis.
+			            </c:otherwise>
+        			</c:choose>
             	</c:when>
+    
               <c:otherwise>
               	<c:forEach var="h" items="${horarios }">
               		<div class="swiper-slide horario">

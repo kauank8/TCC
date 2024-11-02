@@ -3,9 +3,9 @@ package farias.paulino.kauan.SistemaAgendamento.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -120,14 +120,22 @@ public class AgendarServicoController {
 			}
 			
 
-			if(cmd.equals("Confirmar")) {
+			if(cmd != null && cmd.equals("Confirmar")) {
 				agendamento.setCliente((Cliente) session.getAttribute("sessaoCliente"));
 				agendamento.setData(LocalDate.parse(data));
 				agendamento.setFuncionario(funcionario);
 				
+				//hora inicio
 				Horario h = new Horario();
 				h = hRep.findById(Integer.parseInt(horario)).orElseThrow();
-				agendamento.setHorario(h.getHora().toString());
+				agendamento.setHoraInicio(h.getHora());
+				
+				//horaFim
+				 int duracaoTotal = 0;
+				    for (Servico servico : servicos) {
+				        duracaoTotal += servico.getDuracao();
+				    }
+				agendamento.setHoraFim(agendamento.getHoraInicio().plusMinutes(duracaoTotal-1));
 				
 				agendamento.setId(0);
 				agendamento.setServicos(servicos);
@@ -135,7 +143,7 @@ public class AgendarServicoController {
 				
 				aRep.save(agendamento);
 				mensagemSucesso="Agendamento realizado com sucesso<br> Funcionario: " + funcionario.getNome() 
-				+ "<br>Data: "  + data + "<br>Horario: " + agendamento.getHorario() +" horas" + "<br>Obrigado Pela Preferência!";
+				+ "<br>Data: "  + data + "<br>Horario: " + agendamento.getHoraInicio() +" horas" + "<br>Obrigado Pela Preferência!";
 				
 				session.removeAttribute("servicosSelecionados");
 				
@@ -239,8 +247,12 @@ public class AgendarServicoController {
 	        }
 	    }
 	 // Ordena a lista de horários disponíveis do menor para o maior
-	    Collections.sort(horariosDisponiveis, (h1, h2) -> h1.getHora().compareTo(h2.getHora()));
-	    return horariosDisponiveis;
+//	    Collections.sort(horariosDisponiveis, (h1, h2) -> h1.getHora().compareTo(h2.getHora()));
+//	    return horariosDisponiveis;
+	    // Retorna a lista ordenada de horários disponíveis
+        return horariosDisponiveis.stream()
+                                  .sorted((h1, h2) -> h1.getHora().compareTo(h2.getHora()))
+                                  .collect(Collectors.toList());
 	}
 
 
@@ -277,7 +289,7 @@ public class AgendarServicoController {
 	private List<Horario> listarHorarios(String data, String funcionarioId) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate dataFormatada = LocalDate.parse(data);
-		return hRep.listaHorariosDisponiveis(dataFormatada, Integer.parseInt(funcionarioId)) ;
+		return hRep.listaHorariosDisponiveis_2(dataFormatada, Integer.parseInt(funcionarioId)) ;
 	}
 
 }

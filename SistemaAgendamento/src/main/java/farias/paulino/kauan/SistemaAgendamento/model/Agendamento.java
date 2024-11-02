@@ -1,6 +1,7 @@
 package farias.paulino.kauan.SistemaAgendamento.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -35,7 +36,10 @@ public class Agendamento {
     private double valorTotal;
     
     @Column(nullable = false)
-    private String horario;
+    private LocalTime horaInicio;  
+
+    @Column(nullable = false)
+    private LocalTime horaFim;
     
     /*
     @ManyToOne
