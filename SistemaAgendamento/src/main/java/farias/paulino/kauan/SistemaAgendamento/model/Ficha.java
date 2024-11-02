@@ -33,8 +33,9 @@ public class Ficha {
     
     @Column(nullable = false)
     private String observacoes;
-
+    
+    /*
     @OneToMany(mappedBy = "ficha", cascade = CascadeType.ALL)
     private List<Agendamento> agendamentos;
-
+	*/
 }

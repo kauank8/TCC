@@ -63,7 +63,7 @@ public class LoginController {
 					
 					mensagemSucesso = "Bem vindo " + cliente.getNome();
 					model.addAttribute("mensagemSucesso", mensagemSucesso);
-					return new ModelAndView("index");
+					return new ModelAndView("consultarServicoCliente");
 				}
 
 				// Verifico se é um funcionario

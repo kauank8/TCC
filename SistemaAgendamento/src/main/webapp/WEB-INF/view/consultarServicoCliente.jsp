@@ -81,7 +81,6 @@
     <div id="success-container"></div>
 
     <section class="content">
-    
       <c:if test="${not empty mensagemSucesso}">
 			<script src="./resources/js/consultarServicoCliente.js"></script>
 			<script>
@@ -95,8 +94,6 @@
 				displayErrorMessage("${mensagemErro}");
 			</script>
 		</c:if>
-		
-    <form action="consultarServicoCliente" method="post" class="form">
       <div class="search-bar">
         <h2>Serviços</h2>
         <div class="search">
@@ -106,6 +103,10 @@
           </button>
         </div>
       </div>
+    
+		
+    <form action="consultarServicoCliente" method="post" class="form">
+    
       
 	<c:if test="${not empty servicos }">
 	
@@ -125,21 +126,6 @@
 	        </div>
         </c:forEach>
         </div>
-        <!--  
-        <div class="service-item">
-          <div class="check-info">
-            <input type="checkbox" />
-            <div class="service-info">
-              <h3>Corte Simples</h3>
-              <p>80 Minutos</p>
-            </div>
-          </div>
-          <div class="service-price">
-            <p>R$ 50,00</p>
-          </div>
-        </div> 
-      </div>-->
-
       <input type="submit" class="reserve-btn" id="botao" name="botao" value="Reservar">
 	  </c:if>
     </form>

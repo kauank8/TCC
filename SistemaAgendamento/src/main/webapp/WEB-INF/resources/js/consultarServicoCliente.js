@@ -94,6 +94,8 @@ function displayErrorMessage(message) {
 	setTimeout(function() {
 		errorContainer.removeChild(errorDiv);
 	}, 5000);
+	
+	
 }
 
 document.addEventListener('DOMContentLoaded', function() {

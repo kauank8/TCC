@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import farias.paulino.kauan.SistemaAgendamento.model.Cliente;
-import farias.paulino.kauan.SistemaAgendamento.model.Produto;
 import farias.paulino.kauan.SistemaAgendamento.model.Servico;
 import farias.paulino.kauan.SistemaAgendamento.repository.IServicoRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -28,7 +29,7 @@ public class ConsultarSevicoClienteController {
 
 	@RequestMapping(name = "consultarServicoCliente", value = "/consultarServicoCliente", method = RequestMethod.GET)
 	public ModelAndView consultarServicoGet(ModelMap model, HttpSession session) {
-	String mensagemErro = "";
+		String mensagemErro = "";
 		
 		//Verificar estado da sessao
 		Cliente cliente = (Cliente)session.getAttribute("sessaoCliente");
@@ -52,7 +53,7 @@ public class ConsultarSevicoClienteController {
 	@RequestMapping(name = "consultarServicoCliente", value = "/consultarServicoCliente", method = RequestMethod.POST)
 	public ModelAndView consultarServicoPost(@RequestParam Map<String, String> param,
 			@RequestParam(value = "servicosSelecionados", required = false) List<Integer> servicosId, ModelMap model,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpSession session) {
 
 		try {
 			request.setCharacterEncoding("UTF-8");
@@ -85,8 +86,10 @@ public class ConsultarSevicoClienteController {
 			if(cmd.equals("Reservar")) {
 				if(servicosId !=null) {
 				servicos = montaListaServicosSelecionados(servicosId);
-				model.addAttribute("servicos",servicos);
-				//return new ModelAndView("agendamento");
+				session.setAttribute("servicosSelecionados", servicos);
+		        return new ModelAndView("redirect:/agendarServico");
+//				model.addAttribute("servicos",servicos);
+//				return new ModelAndView("agendarServico");
 				}
 				else {
 					mensagemErro="Para realizar um agendamento é necessario selecionar ao menos um servico";
@@ -98,8 +101,10 @@ public class ConsultarSevicoClienteController {
 		}
 		
 		model.addAttribute("mensagemErro", mensagemErro);
+		model.addAttribute("mensagemSucesso", mensagemSucesso);
 		model.addAttribute("servicos",servicos);
 		return new ModelAndView("consultarServicoCliente");
+		
 	}
 	
 	private List<Servico> montaListaServicosSelecionados(List<Integer> servicosId) {
