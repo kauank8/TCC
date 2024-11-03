@@ -28,7 +28,7 @@ public class FuncionarioController {
 		String mensagemErro = "";
 		
 		//Verificar estado da sessao
-		Funcionario funcionario = (Funcionario)session.getAttribute("funcionario");
+		Funcionario funcionario = (Funcionario)session.getAttribute("sessaoFuncionario");
 		if(funcionario == null) {
 			mensagemErro = "Você não tem acesso a essa pagina";
 			session.setAttribute("sessaoFuncionario", funcionario);

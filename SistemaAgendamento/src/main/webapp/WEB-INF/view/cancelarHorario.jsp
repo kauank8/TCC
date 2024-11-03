@@ -85,15 +85,37 @@
 	<div id="success-container"></div>
 
     <section class="content">
+    
+    <c:if test="${not empty mensagemSucesso}">
+        <script src="./resources/js/cancelarHorario.js"></script>
+        <script>
+          displaySuccessMessage("${mensagemSucesso}");
+        </script>
+      </c:if>
+
+      <c:if test="${not empty mensagemErro}">
+        <script src="./resources/js/cancelarHorario.js"></script>
+        <script>
+          displayErrorMessage("${mensagemErro}");
+        </script>
+      </c:if> 
+      
         <h2>Cancelar Horário</h2>
 
             <div class="form-container">
-                <form action="cancelarHorario" method="post" onsubmit="return validaCampos()" class="form">
+                <form id="formSelect" action="cancelarHorario" method="post" onsubmit="return validaCampos()" class="form">
+                	<script>
+				          function submitForm() {
+				            document.getElementById("formSelect")
+				                .submit();
+				            console.log('Teste')
+				          }
+        			</script>
 
                     <div class="label-input-btn">
                         <div class="label-input">
                             <label for="data">Seleciona uma data:</label>
-                            <input type="date" id="data" name="data" value="<%= LocalDate.now() %>">
+                            <input type="date" id="data" name="data" value="${data }" onchange="submitForm()">
                         </div>
     
                         <button type="button" class="btn" id="botaoSelecionarDiaCompleto">Selecionar o dia completo</button>
