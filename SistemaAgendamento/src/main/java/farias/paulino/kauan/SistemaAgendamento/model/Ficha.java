@@ -38,4 +38,7 @@ public class Ficha {
     @OneToMany(mappedBy = "ficha", cascade = CascadeType.ALL)
     private List<Agendamento> agendamentos;
 	*/
+    @ManyToOne
+    @JoinColumn(name = "agendamento_id")  // Adicionando um relacionamento com o Agendamento
+    private Agendamento agendamento;
 }

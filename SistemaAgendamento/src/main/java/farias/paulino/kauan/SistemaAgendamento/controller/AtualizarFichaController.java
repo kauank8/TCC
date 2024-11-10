@@ -1,8 +1,5 @@
 package farias.paulino.kauan.SistemaAgendamento.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import farias.paulino.kauan.SistemaAgendamento.model.Agendamento;
 import farias.paulino.kauan.SistemaAgendamento.model.Cliente;
@@ -24,8 +22,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-public class ConsultarFichaController {
-	
+public class AtualizarFichaController {
+
 	@Autowired
 	private IFichaRepository fRep;
 	@Autowired
@@ -33,80 +31,81 @@ public class ConsultarFichaController {
 	@Autowired
 	private IAgendamentoRepository aRep;
 
-	@RequestMapping(name = "consultarFicha", value = "/consultarFicha", method = RequestMethod.GET)
-	public ModelAndView consultarFichaGet(ModelMap model, HttpSession session) {
+	@RequestMapping(name = "atualizarFicha", value = "/atualizarFicha", method = RequestMethod.GET)
+	public ModelAndView atualizarFichaGet(ModelMap model, HttpSession session) {
+
 		String mensagemErro = "";
 		Ficha ficha = new Ficha();
-		List<Agendamento> agendamentos = new ArrayList<>();
-		
-		//Verificar estado da sessao
-		Funcionario funcionario = (Funcionario)session.getAttribute("sessaoFuncionario");
-		if(funcionario == null) {
+		Agendamento agendamento = new Agendamento();
+
+		// Verificar estado da sessao
+		Funcionario funcionario = (Funcionario) session.getAttribute("sessaoFuncionario");
+		if (funcionario == null) {
 			mensagemErro = "Você não tem acesso a essa pagina";
 			session.setAttribute("sessaoFuncionario", funcionario);
 			model.addAttribute("mensagemErro", mensagemErro);
 			return new ModelAndView("loginCadastroCliente");
 		}
 		Cliente cliente = (Cliente) session.getAttribute("clienteFicha");
-		if(cliente == null ) {
+		if (cliente == null) {
 			mensagemErro = "Você precisa selecionar um cliente para consultar a ficha";
 			model.addAttribute("mensagemErro", mensagemErro);
 			return new ModelAndView("consultarCliente");
 		}
-		
+
 		try {
-			agendamentos = listarAgendametos(cliente);
 			ficha.setCliente(cliente);
-			
+
 			model.addAttribute("ficha", ficha);
 			model.addAttribute("cliente", cliente);
-			
+
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
-		
-		model.addAttribute("agendamentos", agendamentos);
+
 		model.addAttribute("mensagemErro", mensagemErro);
 		return new ModelAndView("consultarFicha");
 	}
-	
-	
 
-	@RequestMapping(name = "consultarFicha", value = "/consultarFicha", method = RequestMethod.POST)
-	public ModelAndView consultarFichaPost(ModelMap model, @RequestParam Map<String, String> param,
-			HttpSession session, HttpServletRequest request) {
+	@RequestMapping(name = "atualizarFicha", value = "/atualizarFicha", method = RequestMethod.POST)
+	public ModelAndView atualizarFichaPost(ModelMap model, HttpSession session, @RequestParam Map<String, String> param,
+			HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
-		try {
-			request.setCharacterEncoding("UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
-		//Entrada
+		// Entrada
 		String cmd = param.get("botao");
-		String cpfPesquisa = param.get("cpf-pesquisa");
-		String filtro = param.get("filtro");
-		String idAgendamento = param.get("idAgendamento");
+		String fichaId = param.get("fichaId");
+		String observacoes = param.get("observacoes");
 		
-		//Saida
-		String mensagemErro="";
-		String mensagemSucesso="";
+		// Saida
+		String mensagemErro = "";
 		Ficha ficha = new Ficha();
 		Agendamento agendamento = new Agendamento();
+		String mensagemSucesso = "";
+		
 		try {
-			if(cmd.equals("Detalhes")) {
-				agendamento = aRep.findById(Integer.parseInt(idAgendamento)).orElseThrow();
-				ficha = fRep.buscarFichaPorAgendamento(agendamento.getCliente().getId(), agendamento.getId());
-				model.addAttribute("ficha", ficha);
-				return new ModelAndView("atualizarFicha");
+			if(cmd.equals("Atualizar")) {
+				ficha = fRep.findById(Integer.parseInt(fichaId)).orElseThrow();
+				ficha.setObservacoes(observacoes);
+				fRep.save(ficha);
+				mensagemSucesso="Ficha atualizada com o sucesso";
+				redirectAttributes.addFlashAttribute("mensagemSucesso", mensagemSucesso);
+
+				model.addAttribute("mensagemSucesso", mensagemSucesso);
+				return new ModelAndView("redirect:consultarFicha");
 			}
+//			ficha.setCliente(cliente);
+
+			model.addAttribute("ficha", ficha);
+//			model.addAttribute("cliente", cliente);
+
 		} catch (Exception e) {
-			mensagemErro=e.getMessage();
+			mensagemErro = e.getMessage();
 		}
+
 		model.addAttribute("mensagemErro", mensagemErro);
-		return new ModelAndView("consultarFicha");
+		model.addAttribute("ficha", ficha);
+		model.addAttribute("mensagemSucesso", mensagemSucesso);
+		return new ModelAndView("atualizarFicha");
 	}
-	
-	private List<Agendamento> listarAgendametos(Cliente cliente) {
-		return aRep.listarAgendamentoFicha(cliente.getId());
-	}
+
 }

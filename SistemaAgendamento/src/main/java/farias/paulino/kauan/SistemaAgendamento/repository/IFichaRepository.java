@@ -10,5 +10,6 @@ import farias.paulino.kauan.SistemaAgendamento.model.Agendamento;
 import farias.paulino.kauan.SistemaAgendamento.model.Ficha;
 
 public interface IFichaRepository extends JpaRepository<Ficha, Integer>{
-	
+	@Query(value="Select * from Ficha where cliente_id = :cliente and agendamento_id = :agendamento", nativeQuery=true)
+	Ficha buscarFichaPorAgendamento(@Param("cliente") int idCliente, @Param("agendamento") int idAgendamento);
 }

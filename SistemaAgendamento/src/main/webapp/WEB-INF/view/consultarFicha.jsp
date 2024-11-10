@@ -97,6 +97,7 @@
     <form action="consultarFicha" method="post">
       <div class="search-bar">
         <h2>Ficha</h2>
+        <!--  
         <div class="search">
           <form action="consultarFicha" method="post" class="form-pesquisar">
             <div class="nome-cpf">
@@ -108,6 +109,7 @@
             </button>
           </form>
         </div>
+        -->
       </div>
 
       <div class="cliente-info">
@@ -136,42 +138,26 @@
           <input type="text" id="numero" name="numero" placeholder="Numero" disabled>
         </label>
       </div>
-
+	</form>
+	
       <div class="service-list">
       <c:if test="${not empty agendamentos }">
      	<c:forEach var="a" items="${agendamentos }">
         <div class="service-item">
           <div class="check-info">
             <div class="service-info">
-              <h3>${a.id }</h3>
-              <p>${a.data}</p>
+              <h3>Agendamento do dia ${a.data}<br></h3>
             </div>
           </div>
           <div class="service-price">
-            <button class="detalhes-btn" onclick="abrirModal()">
-              Detalhes
+          <form action="consultarFicha" method="post">
+          	<input type="hidden" id="idAgendamento" name="idAgendamento" value="${a.id}" />
+            <button type="submit" class="detalhes-btn" name="botao" id="botao" value="Detalhes">
+             Detalhes
             </button>
+           </form> 
           </div>
-          
-          <!-- Modal -->
-          <div id="modal" class="modal">
-            <form action="consultarFicha" method="post">
-              <div class="modal-content">
-                <i class='bx bx-x-circle' onclick="fecharModal()"></i>
-                <h2>${a.id }</h2>
-                <div class="modal-infos">
-                  <p><strong>Produto usado: </strong> Shampoo</p>
-                  <p><strong>Data: </strong> 29/10/2024</p>
-                  <p><strong>Horario: </strong> 10:00</p>
-                </div>
-                <div class="label-textarea">
-                  <strong>Observações:</strong>
-                  <textarea name="observacoes" id="observacoes"></textarea>
-                </div>
-                <input type="submit"  class="atualizar-btn" name="botao" id="botao" value="Atualizar">
-              </div>
-            </form>
-          </div>
+          	
           
         </div>
         </c:forEach>
@@ -211,7 +197,7 @@
         </div> -->
       </div>
 
-    </form>
+  
     
     </section>
 
