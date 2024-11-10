@@ -41,11 +41,11 @@ public class Agendamento {
     @Column(nullable = false)
     private LocalTime horaFim;
     
-    /*
+    
     @ManyToOne
     @JoinColumn(name = "ficha_id")
     private Ficha ficha;
-	*/
+	
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
