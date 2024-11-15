@@ -9,11 +9,11 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>farias.paulino.kauan</groupId>
-	<artifactId>SistemaAgendamento</artifactId>
+	<artifactId>SistemaAgendamentoV2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>SistemaAgendamento</name>
-	<description>SistemaDeAgendamento</description>
+	<description>SistemaDeAgendamentoV2</description>
 	<url />
 	<licenses>
 		<license />
