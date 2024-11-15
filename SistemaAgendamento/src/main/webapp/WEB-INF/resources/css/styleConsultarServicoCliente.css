@@ -61,6 +61,17 @@ body {
     .sandwich {
         transform: translateX(10px);
     }
+
+    button {
+        height: 100%;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: var(--tran-04);
+        background-color: var(--sidebar-cor);
+    }
 }
 
 .sidebar .texto {
@@ -138,12 +149,25 @@ body {
     transition: var(--tran-04);
 }
 
-.sidebar li a:hover {
+.sidebar li form button {
+    width: 210%;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    transition: var(--tran-04);
+    background-color: white;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.sidebar li a:hover, .sidebar li button:hover {
     background: var(--cor-primaria);
 }
 
 .sidebar li a:hover .icon,
-.sidebar li a:hover .texto {
+.sidebar li a:hover .texto,
+.sidebar li button:hover .icon,
+.sidebar li button:hover .texto{
     color: var(--sidebar-cor);
 }
 
@@ -303,6 +327,19 @@ body {
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeDown 2s ease-in-out;
+}
+
+@keyframes fadeDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .service-item:hover{

@@ -41,6 +41,9 @@ public class Agendamento {
     @Column(nullable = false)
     private LocalTime horaFim;
     
+	@Column(nullable = false, length = 10)
+    private String statusAgendamento;
+    
     /*
     @ManyToOne
     @JoinColumn(name = "ficha_id")

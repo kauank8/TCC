@@ -27,51 +27,41 @@
         <div class="menu">
           <ul class="menu-links">
             <li class="nav-link">
-              <a href="#">
+              <a href="homePage">
                 <i class="bx bx-home-alt icon"></i>
-                <span class="texto nav-texto">Dashboard</span>
+                <span class="texto nav-texto">Home</span>
+              </a>
+            </li>
+           <li class="nav-link">
+              <a href="consultarServicoCliente">
+                <i class='bx bx-cut icon'></i>
+                <span class="texto nav-texto">Serviços</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-bar-chart-alt-2 icon"></i>
-                <span class="texto nav-texto">Revenue</span>
+              <a href="consultarAgendamentoCliente">
+                <i class='bx bxs-calendar icon'></i>
+                <span class="texto nav-texto">Meus Agendamentos</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-bell icon"></i>
-                <span class="texto nav-texto">Norifications</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-pie-chart-alt icon"></i>
-                <span class="texto nav-texto">Analytics</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-heart icon"></i>
-                <span class="texto nav-texto">Likes</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-wallet icon"></i>
-                <span class="texto nav-texto">Wallets</span>
+              <a href="meusDadosCliente">
+                <i class='bx bx-user-circle icon'></i>
+                <span class="texto nav-texto">Meus Dados</span>
               </a>
             </li>
           </ul>
         </div>
       </div>
 
-      <div class="baixo">
+       <div class="baixo">
         <li class="">
-          <a href="#">
+         <form action="login" method="POST" >
+          <button type="submit"  id="botao" name="botao" value="Logout">
             <i class="bx bx-log-out icon"></i>
             <span class="texto nav-texto">Logout</span>
-          </a>
+          </button>
+          </form>
         </li>
       </div>
     </nav>
@@ -104,29 +94,57 @@
           </button>
         </div>
       </div>
-
+	
+	
       <div class="service-list">
-      <c:forEach var="a" items="${agendamentos }">
-        <div class="service-item">
-          <div class="check-info">
-          
-            <div class="service-info">
-            <c:forEach var="s" items="${a.servicos }">
-              <h3>${s.titulo}</h3>
-              
-             </c:forEach>
-             <p>${a.horaInicio } - ${a.horaFim }</p>
-            </div>
-          
-          </div>
-          <div class="service-price">
-            <p>${a.valorTotal }</p>
-            <button type="submit" class="btn" id="Cancelar" name="Cancelar" value="${a.id }">
-            Cancelar
-          	</button>
-          </div>
-        </div>
-        </c:forEach>
+      <c:forEach var="a" items="${agendamentos}">
+		  <div class="service-item">
+		    <div class="check-info">
+		      <div class="service-info">
+		        <c:forEach var="s" items="${a.servicos}">
+		          <h3>${s.titulo}</h3>
+		        </c:forEach>
+		        <p>${a.horaInicio} - ${a.horaFim}</p>
+		      </div>
+		    </div>
+		    <div class="service-price">
+		      <p>R$ ${a.valorTotal}</p>
+		      <!-- Botão para abrir o modal -->
+		      <div class="btn" onclick="abrirModal(${a.id})">
+		        Cancelar
+		      </div>
+		    </div>
+		
+		    <!-- Modal -->
+			<div id="modal-${a.id}" class="modal" onclick="fecharModal(event)">
+			    <div class="modal-content" onclick="event.stopPropagation()">
+			        <i class="close-btn bx bx-x-circle" onclick="fecharModal(event)"></i>
+			        <h2>Confirmar Cancelamento</h2>
+			        <p>Tem certeza de que deseja cancelar o agendamento?</p>
+			        <!-- Prévia do Serviço no Modal -->
+			        <div class="service-item-modal">
+			            <div class="check-info-modal">
+			                <div class="service-info-modal">
+			                    <c:forEach var="s" items="${a.servicos }">
+			                        <h3>${s.titulo}</h3>
+			                    </c:forEach>
+			                    <p>${a.horaInicio } - ${a.horaFim }</p>
+			                </div>
+			            </div>
+			            <div class="service-price-modal">
+			                <p>R$ ${a.valorTotal }</p>
+			            </div>
+			        </div>
+			        <!-- Botões de Ação -->
+			        <div class="modal-buttons">
+				        	<button type="submit" class="btn" id="Cancelar" name="Cancelar" value="${a.id }">
+					        	Sim, cancelar
+					    	</button>
+			        </div>
+			    </div>
+			</div>
+		  </div>
+		</c:forEach>
         
         <c:if test="${empty agendamentos }">
         	<h1>Você não possuir agendamentos nesta data!</h1>
@@ -134,8 +152,7 @@
         	 
         </c:if>
       </div>
-
-    </form>
+</form>
     
     </section>
 

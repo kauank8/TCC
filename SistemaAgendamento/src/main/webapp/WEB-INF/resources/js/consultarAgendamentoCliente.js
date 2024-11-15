@@ -1,9 +1,16 @@
 const body = document.querySelector("body"),
-    sidebar = document.querySelector(".sidebar"),
-    toggle = document.querySelector(".imagem-texto");
+  sidebar = document.querySelector(".sidebar"),
+  toggle = document.querySelector(".imagem-texto"),
+  contentSection = document.querySelector(".form");
 
 toggle.addEventListener("click", () => {
-    sidebar.classList.toggle("close");
+  sidebar.classList.toggle("close");
+});
+
+contentSection.addEventListener("click", () => {
+  if (!sidebar.classList.contains("close")) {
+    sidebar.classList.add("close");
+  }
 });
 
 function validaCampos() {
@@ -73,3 +80,29 @@ function displayErrorMessage(message) {
 		errorContainer.removeChild(errorDiv);
 	}, 5000);
 }
+
+// Função para abrir o modal
+function abrirModal(agendamentoId) {
+    // Esconde todos os modais
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => modal.style.display = 'none');
+  
+    // Exibe o modal correspondente e garante que ele será centralizado
+    const modal = document.getElementById('modal-' + agendamentoId);
+    if (modal) {
+        modal.style.display = 'flex'; // Exibe o modal com display flex
+    }
+}
+
+// Função para fechar o modal
+function fecharModal(event) {
+    // Verifica se o clique foi no fundo ou no ícone de fechar
+    const modal = event.target;
+
+    // Se o clique foi no fundo ou no ícone de fechar, fecha o modal
+    if (modal.classList.contains('modal') || modal.classList.contains('close-btn')) {
+        // Encontre o modal e altere o display para 'none' para fechá-lo
+        modal.closest('.modal').style.display = 'none';
+    }
+}
+

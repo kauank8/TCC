@@ -27,51 +27,59 @@
         <div class="menu">
           <ul class="menu-links">
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-home-alt icon"></i>
-                <span class="texto nav-texto">Dashboard</span>
+              <a href="consultarAgendamentoFuncionario">
+                <i class='bx bxs-calendar icon'></i>
+                <span class="texto nav-texto">Meus Agendamentos</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-bar-chart-alt-2 icon"></i>
-                <span class="texto nav-texto">Revenue</span>
+              <a href="consultarCliente">
+                <i class='bx bx-smile icon'></i>
+                <span class="texto nav-texto">Clientes</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-bell icon"></i>
-                <span class="texto nav-texto">Norifications</span>
+              <a href="cancelarHorario">
+                <i class='bx bx-time-five icon'></i>
+                <span class="texto nav-texto">Meu horário</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-pie-chart-alt icon"></i>
-                <span class="texto nav-texto">Analytics</span>
+              <a href="cadastrarServicoProprietaria">
+                <i class='bx bx-cut icon'></i>
+                <span class="texto nav-texto">Cadastrar Serviços</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-heart icon"></i>
-                <span class="texto nav-texto">Likes</span>
+              <a href="cadastroFuncionarioProprietaria">
+                <i class='bx bxs-user-plus icon'></i>
+                <span class="texto nav-texto">Funcionarios</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-wallet icon"></i>
-                <span class="texto nav-texto">Wallets</span>
+              <a href="cadastroProdutoProprietaria">
+                <i class='bx bxs-package icon'></i>
+                <span class="texto nav-texto">Produtos</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a href="meusDadosFuncionario">
+                <i class='bx bx-user-circle icon'></i>
+                <span class="texto nav-texto">Meus Dados</span>
               </a>
             </li>
           </ul>
         </div>
       </div>
 
-      <div class="baixo">
+       <div class="baixo">
         <li class="">
-          <a href="#">
+         <form action="login" method="POST" >
+          <button type="submit"  id="botao" name="botao" value="Logout">
             <i class="bx bx-log-out icon"></i>
             <span class="texto nav-texto">Logout</span>
-          </a>
+          </button>
+          </form>
         </li>
       </div>
     </nav>

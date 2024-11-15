@@ -79,7 +79,10 @@ public class ConsultarAgendamentoClienteController {
 			}
 			if(cancelar != null && !cancelar.isEmpty() && !cancelar.isBlank()) {
 				agendamento = aRep.findById(Integer.parseInt(cancelar)).orElseThrow();
-				aRep.delete(agendamento);
+//				aRep.delete(agendamento);
+				
+				agendamento.setStatusAgendamento("Cancelado");
+				aRep.save(agendamento);
 				
 				Cliente cliente = (Cliente) session.getAttribute("sessaoCliente");
 				agendamentos = listarAgendamentos(cliente, LocalDate.parse(data));
@@ -96,6 +99,6 @@ public class ConsultarAgendamentoClienteController {
 	}
 	
 	private List<Agendamento> listarAgendamentos(Cliente cliente, LocalDate data) {
-		return aRep.listarAgendamentoCliente(data, cliente.getId());
+		return aRep.listarAgendamentoCliente(data, cliente.getId(), "Ativo");
 	}
 }

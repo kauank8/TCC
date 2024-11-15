@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" type="text/css"
-	href='<c:url value = "./resources/css/styleCadastroProdutoProprietaria.css"/>'>
+	href='<c:url value = "./resources/css/styleCadastroFuncionarioProprietaria.css"/>'>
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
 	rel='stylesheet'>
 <title>Perpétua Beleza e Estética - Funcionários</title>
@@ -28,38 +28,64 @@
 		</header>
 
 		<div class="menu-bar">
-			<div class="menu">
-				<ul class="menu-links">
-					<li class="nav-link"><a href="#"> <i
-							class='bx bx-home-alt icon'></i> <span class="texto nav-texto">Dashboard</span>
-					</a></li>
-					<li class="nav-link"><a href="#"> <i
-							class='bx bx-bar-chart-alt-2 icon'></i> <span
-							class="texto nav-texto">Revenue</span>
-					</a></li>
-					<li class="nav-link"><a href="#"> <i
-							class='bx bx-bell icon'></i> <span class="texto nav-texto">Norifications</span>
-					</a></li>
-					<li class="nav-link"><a href="#"> <i
-							class='bx bx-pie-chart-alt icon'></i> <span
-							class="texto nav-texto">Analytics</span>
-					</a></li>
-					<li class="nav-link"><a href="#"> <i
-							class='bx bx-heart icon'></i> <span class="texto nav-texto">Likes</span>
-					</a></li>
-					<li class="nav-link"><a href="#"> <i
-							class='bx bx-wallet icon'></i> <span class="texto nav-texto">Wallets</span>
-					</a></li>
-				</ul>
-			</div>
+        <div class="menu">
+          <ul class="menu-links">
+            <li class="nav-link">
+              <a href="consultarAgendamentoFuncionario">
+                <i class='bx bxs-calendar icon'></i>
+                <span class="texto nav-texto">Meus Agendamentos</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a href="consultarCliente">
+                <i class='bx bx-smile icon'></i>
+                <span class="texto nav-texto">Clientes</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a href="cancelarHorario">
+                <i class='bx bx-time-five icon'></i>
+                <span class="texto nav-texto">Meu horário</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a href="cadastrarServicoProprietaria">
+                <i class='bx bx-cut icon'></i>
+                <span class="texto nav-texto">Cadastrar Serviços</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a href="cadastroFuncionarioProprietaria">
+                <i class='bx bxs-user-plus icon'></i>
+                <span class="texto nav-texto">Funcionarios</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a href="cadastroProdutoProprietaria">
+                <i class='bx bxs-package icon'></i>
+                <span class="texto nav-texto">Produtos</span>
+              </a>
+            </li>
+            <li class="nav-link">
+              <a href="meusDadosFuncionario">
+                <i class='bx bx-user-circle icon'></i>
+                <span class="texto nav-texto">Meus Dados</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-		</div>
-
-		<div class="baixo">
-			<li class=""><a href="#"> <i class='bx bx-log-out icon'></i>
-					<span class="texto nav-texto">Logout</span>
-			</a></li>
-		</div>
+	<div class="baixo">
+        <li class="">
+         <form action="login" method="POST" >
+          <button type="submit"  id="botao" name="botao" value="Logout">
+            <i class="bx bx-log-out icon"></i>
+            <span class="texto nav-texto">Logout</span>
+          </button>
+          </form>
+        </li>
+      </div>
 	</nav>
 
 	<div id="error-container"></div>
@@ -86,7 +112,7 @@
 		</div>
 
 		<div class="form-container">
-			<form action="funcionario" method="post"
+			<form action="cadastroFuncionarioProprietaria" method="post"
 				onsubmit="return validaCampos()" class="form">
 				<div class="input-buscar">
 					<div class="label-input">
@@ -171,7 +197,7 @@
 								<td><c:out value="${f.telefone }" /></td>
 								<td><c:out value="${f.cpf }" /></td>
 								<td>${f.nivelAcesso == 1 ? 'Funcionario' : f.nivelAcesso == 2 ? 'Proprietaria' : 'Valor desconhecido'}</td>
-								<form action="funcionario" method="post">
+								<form action="cadastroFuncionarioProprietaria" method="post">
 									<input type="hidden" id="id" name="id" value="${f.id}" />
 									<td>
 										<button type="submit" class="btn" id="botao" name="botao"

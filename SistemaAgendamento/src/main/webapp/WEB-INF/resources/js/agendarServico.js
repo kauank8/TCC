@@ -1,9 +1,16 @@
 const body = document.querySelector("body"),
   sidebar = document.querySelector(".sidebar"),
-  toggle = document.querySelector(".imagem-texto");
+  toggle = document.querySelector(".imagem-texto"),
+  contentSection = document.querySelector(".content");
 
 toggle.addEventListener("click", () => {
   sidebar.classList.toggle("close");
+});
+
+contentSection.addEventListener("click", () => {
+  if (!sidebar.classList.contains("close")) {
+    sidebar.classList.add("close");
+  }
 });
 
 function validaCampos() {
@@ -17,6 +24,11 @@ function validaCampos() {
   if (!data) {
     errorMessage += "O campo 'Data' é obrigatório.<br>";
   }
+  if (!data) {
+		errorMessage += "É necessário selecionar uma data.<br>";
+	}else if (data < today) {
+        errorMessage += "A data selecionada não pode ser anterior à data atual.<br>";
+    }
    if (!funcionario || funcionario === "") { // Verifica se "funcionario" está vazio ou é a opção desabilitada
     errorMessage += "É necessario selecionar um profissional para confirmar o agendamento.<br>";
   }
@@ -45,6 +57,8 @@ function validaCampos() {
   }
   return true;
 }
+
+
 function displaySuccessMessage(message) {
   var successContainer = document.getElementById("success-container");
   successContainer.innerHTML = ""; // Limpa o conteúdo anterior

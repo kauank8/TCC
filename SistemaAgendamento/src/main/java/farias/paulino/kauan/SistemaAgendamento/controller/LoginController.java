@@ -63,7 +63,7 @@ public class LoginController {
 					
 					mensagemSucesso = "Bem vindo " + cliente.getNome();
 					model.addAttribute("mensagemSucesso", mensagemSucesso);
-					return new ModelAndView("consultarServicoCliente");
+					return new ModelAndView("homePage");
 				}
 
 				// Verifico se é um funcionario
@@ -75,16 +75,33 @@ public class LoginController {
 					
 					mensagemSucesso = "Bem vindo " + funcionario.getNome();
 					model.addAttribute("mensagemSucesso", mensagemSucesso);
-					return new ModelAndView("cadastroFuncionarioProprietaria");
+					return new ModelAndView("consultarAgendamentoFuncionario");
 				}
 
 				mensagemErro = "Email ou senha invalido";
 
 			}
+			if(cmd.equals("Logout")) {
+				HttpSession session = request.getSession();
+				cliente = (Cliente) session.getAttribute("sessaoCliente");
+				funcionario = (Funcionario) session.getAttribute("sessaoFuncionario");
+				if (cliente != null) {
+					mensagemSucesso="Você deslogou com sucesso! <br> Até mais " + cliente.getNome();
+				}
+				funcionario = (Funcionario)session.getAttribute("sessaoFuncionario");
+				if(funcionario != null) {
+					mensagemSucesso="Você deslogou com sucesso! <br> Até mais " + funcionario.getNome();
+				}
+				session.removeAttribute("sessaoCliente");
+				session.removeAttribute("sessaoFuncionario");
+				session.removeAttribute("clienteFicha");
+				
+			}
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
 		}
 		model.addAttribute("mensagemErro", mensagemErro);
+		model.addAttribute("mensagemSucesso", mensagemSucesso);
 		return new ModelAndView("loginCadastroCliente");
 	}
 }

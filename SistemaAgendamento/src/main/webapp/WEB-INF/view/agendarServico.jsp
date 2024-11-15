@@ -37,39 +37,27 @@
         <div class="menu">
           <ul class="menu-links">
             <li class="nav-link">
-              <a href="#">
+              <a href="homePage">
                 <i class="bx bx-home-alt icon"></i>
-                <span class="texto nav-texto">Dashboard</span>
+                <span class="texto nav-texto">Home</span>
+              </a>
+            </li>
+           <li class="nav-link">
+              <a href="consultarServicoCliente">
+                <i class='bx bx-cut icon'></i>
+                <span class="texto nav-texto">Serviços</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-bar-chart-alt-2 icon"></i>
-                <span class="texto nav-texto">Revenue</span>
+              <a href="consultarAgendamentoCliente">
+                <i class='bx bxs-calendar icon'></i>
+                <span class="texto nav-texto">Meus Agendamentos</span>
               </a>
             </li>
             <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-bell icon"></i>
-                <span class="texto nav-texto">Norifications</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-pie-chart-alt icon"></i>
-                <span class="texto nav-texto">Analytics</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-heart icon"></i>
-                <span class="texto nav-texto">Likes</span>
-              </a>
-            </li>
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-wallet icon"></i>
-                <span class="texto nav-texto">Wallets</span>
+              <a href="meusDadosCliente">
+                <i class='bx bx-user-circle icon'></i>
+                <span class="texto nav-texto">Meus Dados</span>
               </a>
             </li>
           </ul>
@@ -78,16 +66,20 @@
 
       <div class="baixo">
         <li class="">
-          <a href="#">
+         <form action="login" method="POST" >
+          <button type="submit"  id="botao" name="botao" value="Logout">
             <i class="bx bx-log-out icon"></i>
             <span class="texto nav-texto">Logout</span>
-          </a>
+          </button>
+          </form>
         </li>
       </div>
     </nav>
 
     <div id="error-container"></div>
     <div id="success-container"></div>
+    
+    
 
     <section class="content">
        <c:if test="${not empty mensagemSucesso}">
@@ -104,7 +96,8 @@
         </script>
       </c:if> 
       
-      <form id="formSelect" action="agendarServico" method="post" class="form" onsubmit="return validaCampos()">
+      <form id="formSelect" action="agendarServico" method="post" onsubmit="return validaCampos()" class="form">
+      
         <h2>Agendar Serviços</h2>
 
         <!-- Tentativa de fazer que quando o select for mudado 
@@ -249,8 +242,9 @@
         <input type="submit" class="confirm-btn" id="botao" name="botao" value="Confirmar"/>
       </form>
     </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="./resources/js/agendarServico.js"></script>
+   	 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	 <script src="./resources/js/agendarServico.js"></script>
+    
+   
   </body>
 </html>

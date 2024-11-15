@@ -1,14 +1,22 @@
 const body = document.querySelector("body"),
-    sidebar = document.querySelector(".sidebar"),
-    toggle = document.querySelector(".imagem-texto");
+  sidebar = document.querySelector(".sidebar"),
+  toggle = document.querySelector(".imagem-texto"),
+  contentSection = document.querySelector(".content");
 
 toggle.addEventListener("click", () => {
-    sidebar.classList.toggle("close");
+  sidebar.classList.toggle("close");
+});
+
+contentSection.addEventListener("click", () => {
+  if (!sidebar.classList.contains("close")) {
+    sidebar.classList.add("close");
+  }
 });
 
 function validaCampos(){
 	var form = document.querySelector('.form');
 	var data = form["data"].value.trim();
+	var justificativa = form["justificativa"].value.trim();
 
 	var errorMessage = "";
 	var today = new Date().toISOString().split('T')[0];
@@ -17,6 +25,16 @@ function validaCampos(){
 		errorMessage += "É necessário selecionar uma data.<br>";
 	}else if (data < today) {
         errorMessage += "A data selecionada não pode ser anterior à data atual.<br>";
+    }
+    
+    if(!justificativa){
+		errorMessage += "É necessário preencher a justificativa.<br>";
+	}
+	
+	// Verifica se ao menos um checkbox de horários foi selecionado
+    var checkboxes = document.querySelectorAll('input[name="horarios"]:checked'); // Seleciona os checkboxes marcados
+    if (checkboxes.length === 0) {
+        errorMessage += "É necessário selecionar pelo menos um horário.<br>";
     }
 	// Limpa mensagens de erro anteriores
 	var errorContainer = document.getElementById("error-container");

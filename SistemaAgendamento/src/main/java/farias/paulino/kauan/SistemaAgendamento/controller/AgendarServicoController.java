@@ -1,5 +1,6 @@
 package farias.paulino.kauan.SistemaAgendamento.controller;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -118,9 +119,32 @@ public class AgendarServicoController {
 			if(data.isEmpty()) {
 				data = LocalDate.now().toString();
 			}
+			if(data != null && !data.isEmpty()) {
+				if(LocalDate.parse(data).isBefore(LocalDate.now())) {
+					mensagemErro="A data escolhida não pode ser antes de hoje!";
+					data = LocalDate.now().toString();
+					if (funcionarioId != null && !funcionarioId.isEmpty() && !funcionarioId.isBlank()) {
+						funcionario = buscarFuncionario(funcionarioId);
+						horarios = listarHorarios(data, funcionarioId);
+						horarios = listarHorariosServicos(horarios, servicos);
+					}
+				}
+				
+				if(LocalDate.parse(data).getDayOfWeek() == DayOfWeek.SUNDAY) {
+					mensagemErro="O estabalecimento não realiza agendamentos aos domingos!";
+					data = LocalDate.now().toString();
+					if (funcionarioId != null && !funcionarioId.isEmpty() && !funcionarioId.isBlank()) {
+						funcionario = buscarFuncionario(funcionarioId);
+						horarios = listarHorarios(data, funcionarioId);
+						horarios = listarHorariosServicos(horarios, servicos);
+					}
+				}
+				funcionarios = listarFuncionarios();
+			}
 			
 
 			if(cmd != null && cmd.equals("Confirmar")) {
+				if(horario != null && !horario.isBlank() ) {
 				agendamento.setCliente((Cliente) session.getAttribute("sessaoCliente"));
 				agendamento.setData(LocalDate.parse(data));
 				agendamento.setFuncionario(funcionario);
@@ -140,6 +164,7 @@ public class AgendarServicoController {
 				agendamento.setId(0);
 				agendamento.setServicos(servicos);
 				agendamento.setValorTotal(precoTotal);
+				agendamento.setStatusAgendamento("Ativo");
 				
 				aRep.save(agendamento);
 				mensagemSucesso="Agendamento realizado com sucesso<br> Funcionario: " + funcionario.getNome() 
@@ -152,6 +177,16 @@ public class AgendarServicoController {
 //				return new ModelAndView("redirect:/consultarServicoCliente");
 				redirectAttributes.addFlashAttribute("mensagemSucesso", mensagemSucesso);
 				return new ModelAndView("redirect:/consultarServicoCliente");
+				}
+				else {
+					mensagemErro="Você precisa selecionar um horario para agendar o servico";
+					model.addAttribute("mensagemErro", mensagemErro);
+					model.addAttribute("servicos", servicos);
+					model.addAttribute("data", data);
+					model.addAttribute("precoTotal", precoTotal);
+					model.addAttribute("funcionarios", funcionarios);
+					return new ModelAndView("agendarServico");
+				}
 			}
 			
 		} catch (Exception e) {
@@ -171,45 +206,7 @@ public class AgendarServicoController {
 
 
 	private List<Horario> listarHorariosServicos(List<Horario> horarios, List<Servico> servicos) {
-//		List<Horario> horariosDisponiveis = new ArrayList<>();
-	/*    
-	    int duracaoTotal = 0;
-	    for (Servico servico : servicos) {
-	        duracaoTotal += servico.getDuracao();
-	    }
-	  
-	    int bloco = duracaoTotal/60;
-	    int sizeHorarios = horarios.size();
-	    int contRemocao = 0;
-	    int y=0;
-	    for(int x=0; x<sizeHorarios;x++) {
-	    	int z=1;
-	    	Horario horarioBase = horarios.get(x);
-	    	for(y = x+1; z < bloco;z++) {
-	    		if(y==sizeHorarios) {
-	    			if(bloco>1) {
-	    				horarios.remove(y-1);
-	    			}
-	    			break;
-	    		}
-	    		Horario proximoHorario = horarios.get(y);
-	    		if(horarioBase.getHora().plusMinutes(60) == proximoHorario.getHora()) {
-	    			horarioBase = proximoHorario;
-	    			y+=1;
-	    		}else {
-	    			horarios.remove(x);
-	    			contRemocao+=1;
-	    			break;
-	    		}
-	    	}
-	    	x-=contRemocao;
-	    	if(x<0) {
-	    		x=-1;
-	    	}
-	    	contRemocao=0;
-	    	y=0;
-	    	sizeHorarios = horarios.size();
-	    }*/
+
 		
 		  // Calcula a duração total dos serviços em minutos
 	    int duracaoTotal = servicos.stream().mapToInt(Servico::getDuracao).sum();
@@ -289,7 +286,7 @@ public class AgendarServicoController {
 	private List<Horario> listarHorarios(String data, String funcionarioId) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate dataFormatada = LocalDate.parse(data);
-		return hRep.listaHorariosDisponiveis_2(dataFormatada, Integer.parseInt(funcionarioId)) ;
+		return hRep.listaHorariosDisponiveis_3(dataFormatada, Integer.parseInt(funcionarioId)) ;
 	}
 
 }

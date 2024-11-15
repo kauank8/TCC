@@ -1,6 +1,7 @@
 package farias.paulino.kauan.SistemaAgendamento.controller;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class ConsultarAgendamentoFuncionarioController {
 			agendamentosDoDia = listarAgendamentos(funcionario,data);
 			qtdAgendamentosDoDia = agendamentosDoDia.size();
 			if(agendamentosDoDia.isEmpty()) {
-				proximosAgendamentos = aRep.listarProximosAgendamentos(LocalDate.now(), funcionario.getId());
+				proximosAgendamentos = aRep.listarProximosAgendamentos_2(LocalDate.now(), funcionario.getId(), LocalTime.now().toString());
 			}
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();
@@ -86,7 +87,7 @@ public class ConsultarAgendamentoFuncionarioController {
 				qtdAgendamentosDoDia = agendamentos.size();
 			}
 			if(agendamentos.isEmpty()) {
-				proximosAgendamentos = aRep.listarProximosAgendamentos(LocalDate.now(), funcionario.getId());
+				proximosAgendamentos = aRep.listarProximosAgendamentos_2(LocalDate.now(), funcionario.getId(),LocalTime.now().toString());
 			}
 		} catch (Exception e) {
 			mensagemErro = e.getMessage();

@@ -75,6 +75,7 @@ public class CancelarHorarioController {
 		String cmd = param.get("botao");
 		String id = param.get("id");
 		String data = param.get("data");
+		String justificativa = param.get("justificativa");
 		
 		// Saida
 		String mensagemSucesso = "";
@@ -110,7 +111,7 @@ public class CancelarHorarioController {
 			if (cmd.equals("Confirmar")) {
 				for (Horario h : horarios) {
 					HorarioCancelado horarioCancelado = new HorarioCancelado(0, funcionario, h, LocalDate.parse(data),
-							"Teste");
+							justificativa);
 					hcRep.save(horarioCancelado);
 				}
 				mensagemSucesso = "Horarios cancelados com sucesso";

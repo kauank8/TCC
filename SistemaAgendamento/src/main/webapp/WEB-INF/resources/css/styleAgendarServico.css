@@ -61,6 +61,17 @@ body {
     .sandwich {
         transform: translateX(10px);
     }
+
+    button {
+        height: 100%;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: var(--tran-04);
+        background-color: var(--sidebar-cor);
+    }
 }
 
 .sidebar .texto {
@@ -137,13 +148,26 @@ body {
     border-radius: 6px;
     transition: var(--tran-04);
 }
+.sidebar li form button {
+    width: 210%;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    transition: var(--tran-04);
+    background-color: white;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
 
-.sidebar li a:hover {
+
+.sidebar li a:hover, .sidebar li button:hover {
     background: var(--cor-primaria);
 }
 
 .sidebar li a:hover .icon,
-.sidebar li a:hover .texto {
+.sidebar li a:hover .texto,
+.sidebar li button:hover .icon,
+.sidebar li button:hover .texto{
     color: var(--sidebar-cor);
 }
 

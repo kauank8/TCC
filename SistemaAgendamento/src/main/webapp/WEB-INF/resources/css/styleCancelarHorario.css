@@ -58,8 +58,19 @@ body{
         transform: translateX(-10px);
     }
 
-    .sandwich{
-       transform: translateX(10px); 
+    .sandwich {
+        transform: translateX(10px);
+    }
+
+    button {
+        height: 100%;
+        width: 40%;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: var(--tran-04);
+        background-color: var(--sidebar-cor);
     }
 }
 
@@ -138,12 +149,26 @@ body{
     transition: var(--tran-04);
 }
 
-.sidebar li a:hover{
+.sidebar li form button {
+    width: 210%;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    transition: var(--tran-04);
+    background-color: white;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+
+.sidebar li a:hover, .sidebar li button:hover {
     background: var(--cor-primaria);
 }
 
 .sidebar li a:hover .icon,
-.sidebar li a:hover .texto{
+.sidebar li a:hover .texto,
+.sidebar li button:hover .icon,
+.sidebar li button:hover .texto{
     color: var(--sidebar-cor);
 }
 /*
@@ -265,6 +290,47 @@ th, td {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+.label-textarea {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.label-textarea textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    background-color: #f7f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    color: #5e5e5e;
+}
+
+.label-textarea textarea:focus {
+    border-color: var(--hover-botao);
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+    outline: none;
+}
+
+.label-textarea textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #f7f9fa inset !important;
+    -webkit-text-fill-color: #000 !important;
+}
+
+.label-textarea textarea::placeholder {
+    color: #7f8c8d;
+    opacity: 0.7;
+}
+
+.label-textarea textarea:hover {
+    border-color: #ffb6c1cb;
+    background-color: #eef2f3;
 }
 
 /*Mensagens*/

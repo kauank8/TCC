@@ -14,22 +14,38 @@ contentSection.addEventListener("click", () => {
 });
 
 function validateForm() {
-  var form = document.querySelector(".form-pesquisar"); // Seleciona o formulário diretamente
-  var nome = form["nome-pesquisa"].value;
-  var cpf = form["cpf-pesquisa"].value;
+  var form = document.querySelector(".form-singup"); // Seleciona o formulário diretamente
+  var email = form["email"].value;
+  var senha = form["senha"].value;
+  var cpf = form["cpf"].value;
+  var senha = form["senha"].value;
+  var telefone = form["telefone"].value;
+  var logradouro = form["logradouro"].value;
+  var numero = form["numero"].value;
+  var nome = form["nome"].value;
 
   var errorMessage = "";
 
-  if (!nome && !cpf) {
-    errorMessage += "O campo 'Nome' ou o campo 'CPF' são necessarios para a pesquisa.<br>";
+  if (!email) {
+    errorMessage += "O campo 'Email' é obrigatório.<br>";
   }
-
-  if (!nome && (cpf && cpf.length != 11)) {
-     errorMessage += "O campo 'CPF' deve ter 11 dígitos.<br>";
+  if (!senha) {
+    errorMessage += "O campo 'Senha' é obrigatório.<br>";
   }
-
-  if(nome && cpf){
-	errorMessage += "Por favor, preencha apenas o campo 'Nome' ou o campo 'CPF' para realizar a pesquisa.<br>";
+  if (!telefone) {
+    errorMessage += "O campo 'Telefone' é obrigatório.<br>";
+  }
+  if (!logradouro) {
+    errorMessage += "O campo 'Logradouro' é obrigatório.<br>";
+  }
+  if (!numero) {
+    errorMessage += "O campo 'Numero' é obrigatório.<br>";
+  }
+  if (!nome) {
+    errorMessage += "O campo 'Nome' é obrigatório.<br>";
+  }
+  if (!cpf || cpf.length != 11) {
+    errorMessage += "O campo 'CPF' deve ter 11 dígitos.<br>";
   }
 
   // Limpa mensagens de erro anteriores
@@ -53,6 +69,44 @@ function validateForm() {
   }
   return true;
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  var swiper = new Swiper(".mySwiper", {
+    effect: "cube",
+    grabCursor: true,
+    cubeEffect: {
+      shadow: true,
+      slideShadows: true,
+      shadowOffset: 20,
+      shadowScale: 0.94,
+    },
+    loop: true,
+    pagination: {
+      el: ".swiper-pagination",
+    },
+    autoplay: {
+      delay: 6000, // tempo entre as transições (em milissegundos)
+      disableOnInteraction: false, // permite que o autoplay continue mesmo após a interação
+    },
+    speed: 1500,
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  var swiperMeio = new Swiper(".mySwiper-meio", {
+    spaceBetween: 30,
+    effect: "fade",
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+	autoplay: {
+		delay: 2000, // tempo entre as transições (em milissegundos)
+		disableOnInteraction: false, // permite que o autoplay continue mesmo após a interação
+	  },
+	  speed: 1500,
+  });
+});
 
 function displaySuccessMessage(message) {
   var successContainer = document.getElementById("success-container");
@@ -85,13 +139,4 @@ function displayErrorMessage(message) {
   setTimeout(function () {
     errorContainer.removeChild(errorDiv);
   }, 5000);
-}
-
-function abrirModal() {
-  document.getElementById("modal").style.display = "flex";
-  
-}
-
-function fecharModal() {
-  document.getElementById("modal").style.display = "none";
 }

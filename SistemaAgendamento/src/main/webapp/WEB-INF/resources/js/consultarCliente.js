@@ -1,11 +1,17 @@
 const body = document.querySelector("body"),
-    sidebar = document.querySelector(".sidebar"),
-    toggle = document.querySelector(".imagem-texto");
+  sidebar = document.querySelector(".sidebar"),
+  toggle = document.querySelector(".imagem-texto"),
+  contentSection = document.querySelector(".content");
 
 toggle.addEventListener("click", () => {
-    sidebar.classList.toggle("close");
+  sidebar.classList.toggle("close");
 });
 
+contentSection.addEventListener("click", () => {
+  if (!sidebar.classList.contains("close")) {
+    sidebar.classList.add("close");
+  }
+});
 function validateForm() {
 	var form = document.querySelector('.form-singup'); // Seleciona o formulário diretamente
 	var email = form["email"].value;
